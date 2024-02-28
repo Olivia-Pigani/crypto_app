@@ -8,3 +8,24 @@ public interface CryptoRepository extends ReactiveMongoRepository<Crypto, Intege
 
 Mono<Crypto> findCryptoByName(String crypto);
 }
+
+
+
+
+/*
+{
+        "crypto": {
+        "id": "65dfa4713a8e0844d18ba79b",
+        "name": "Ethereum",
+        "symbol": "ETH"
+        }
+        }
+        {
+        "crypto": {
+        "id": "65dfa48b3a8e0844d18ba79c",
+        "name": "Bitcoin",
+        "symbol": "BTC"
+        }
+        }*/
+
+

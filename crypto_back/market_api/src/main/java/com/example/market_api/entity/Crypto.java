@@ -21,15 +21,14 @@ public class Crypto {
     @Id
     private String id;
     private String name;
-    private String ticker;
-    private double cryptoValue;
+    private String symbol;
 
 
-    public Crypto(String name, double cryptoValue,String ticker) {
+
+    public Crypto(String name,String symbol) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.cryptoValue = cryptoValue;
-        this.ticker = ticker;
+        this.symbol = symbol;
 
     }
 
