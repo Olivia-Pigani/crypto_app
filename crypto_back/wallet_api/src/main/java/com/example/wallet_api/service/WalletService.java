@@ -24,8 +24,8 @@ private ConnectionFactory connectionFactory;
     private void makeWalletTable(){
         DatabaseClient databaseClient = DatabaseClient.create(connectionFactory);
         Mono<Void> monoTable = databaseClient.sql("CREATE TABLE IF NOT EXISTS wallet" +
-                "(id bigint primary key auto_increment" +
-                ")")
+                "(id bigint primary key auto_increment," +
+                "balance double )")
                 .then();
 
         monoTable.subscribe();

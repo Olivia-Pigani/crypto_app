@@ -20,13 +20,13 @@ public class Wallet {
 
     @Id
     private long id;
+    private double balance;
 
     private User user;
 
-    private double solde;
 
-    @Column("crypto_ids")
-    private List<Long> cryptoIds;
+//    @Column("crypto_ids")
+//    private List<Long> cryptoIds;
 
 
 }
