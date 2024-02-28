@@ -11,7 +11,6 @@ const CryptoDisplay = (props) => {
           <span>{crypto.name}</span>
          
         </div>
-        <img src={crypto.pictureURL} alt="Crypto image" className="card-img-top border-top border-bottom border-light" />
         <div className="card-body">
           <ul className="list-group list-group-flush">
             <li className="list-group-item bg-light text-dark d-flex"><b className="me-auto">Name: </b>{crypto.name}</li>

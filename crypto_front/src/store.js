@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authSlice from './components/auth/authSlice'
+import authSlice from './components/trader/traderSlice'
 import cryptoSlice from './components/crypto/cryptoSlice'
 
 
 const store = configureStore({
   reducer: {
-    auth: authSlice,
+    traders: traderSlice,
     cryptos: cryptoSlice
   }
 })
