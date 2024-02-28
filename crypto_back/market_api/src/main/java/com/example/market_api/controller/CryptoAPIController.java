@@ -24,11 +24,13 @@ public class CryptoAPIController {
         this.cryptoRepository = cryptoRepository;
     }
 
+/*
     @PostConstruct
     public void insertDataOnStartup() {
         System.out.println("hello");
 cryptoService.insertData();
     }
+*/
 
     @GetMapping("/all")
     public Flux<Crypto> getAllCrypto() {
@@ -37,7 +39,6 @@ cryptoService.insertData();
 
     @PostMapping
     public Mono<Crypto> add(@RequestBody Crypto crypto) {
-        return cryptoRepository.save(crypto)
-                .doOnSuccess(savedCrypto -> cryptoService.insertData());
+        return cryptoRepository.save(crypto);
     }
 }

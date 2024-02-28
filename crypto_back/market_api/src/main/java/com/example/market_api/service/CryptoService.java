@@ -1,6 +1,7 @@
 package com.example.market_api.service;
 
 import com.example.market_api.entity.Crypto;
+import com.example.market_api.entity.MarketData;
 import com.example.market_api.repository.CryptoRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,13 +29,15 @@ import java.util.List;
 @Service
 public class CryptoService {
 
+    private RestTemplate restTemplate;
     private final CryptoRepository cryptoRepository;
-    private static String apiKey = "b54bcf4d-1bca-4e8e-9a24-22ff2c3d462c";
+//
 
     public CryptoService(CryptoRepository cryptoRepository) {
         this.cryptoRepository = cryptoRepository;
     }
 
+/*
     @Scheduled(fixedDelay = 3600000)
     public void insertData(){
         String uri = "https://sandbox-api.coinmarketcap.com/v1/cryptocurrency/listings/latest";
@@ -93,5 +97,13 @@ public class CryptoService {
         }
 
         return responseContent;
+    }
+*/
+
+
+
+    public MarketData getMarketData(String cryptoId) {
+        String marketDataUrl = "http://localhost:8080/marketData" + cryptoId;
+        return restTemplate.getForObject(marketDataUrl, MarketData.class);
     }
 }

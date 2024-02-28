@@ -3,10 +3,8 @@ package com.example.market_api.controller;
 import com.example.market_api.entity.MarketData;
 import com.example.market_api.repository.MarketDataRepository;
 import jakarta.annotation.PostConstruct;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
@@ -38,5 +36,10 @@ private final MarketDataRepository marketDataRepository;
         return Math.random() * 1000;
 
 }
+
+    @GetMapping("/marketData/{cryptoId}")
+    public Flux<MarketData> getMarketData(@PathVariable String cryptoId) {
+       return marketDataRepository.findAllById(cryptoId);
+    }
 }
 
