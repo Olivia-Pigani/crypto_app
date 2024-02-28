@@ -23,6 +23,8 @@ public class Wallet {
 
     private User user;
 
+    private double solde;
+
     @Column("crypto_ids")
     private List<Long> cryptoIds;
 
