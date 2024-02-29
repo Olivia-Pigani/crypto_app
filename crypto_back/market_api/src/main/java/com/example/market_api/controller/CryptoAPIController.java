@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequestMapping("crypto")
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CryptoAPIController {
 
     private final CryptoService cryptoService;
@@ -30,7 +30,7 @@ public class CryptoAPIController {
     }
 
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Crypto> getAllCrypto() {
         return cryptoRepository.findAll();
     }

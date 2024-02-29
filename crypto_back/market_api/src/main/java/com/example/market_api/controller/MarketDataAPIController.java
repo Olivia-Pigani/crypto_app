@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 @RequestMapping("marketData")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 public class MarketDataAPIController {
 
