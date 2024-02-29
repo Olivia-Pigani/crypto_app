@@ -8,11 +8,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("wallet")
 public class WalletController {
 
-
-// post pour achat, delete une quantity, get all et id
 
     private WalletService walletService;
 
@@ -35,6 +34,10 @@ public class WalletController {
     public Mono<Void> deleteAWallet(@PathVariable("walletId") Long walletId){
         return walletService.deleteWallet(walletId);
     }
+
+
+//    @PostMapping("/addwallet")
+//    public Mono<Wallet> addwallet
 
 
 
