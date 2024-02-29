@@ -109,6 +109,21 @@ public class CryptoService {
                     }
                 });
     }
+
+    public Flux<Crypto> getPriceByDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        LocalDateTime dateConverted = LocalDateTime.parse(date, formatter);
+
+        return marketDataRepository.findByTradingTime(dateConverted)
+                .map(this::mapToCrypto);
+    }
+
+    private Crypto mapToCrypto(MarketData marketData) {
+        Crypto crypto = new Crypto();
+        crypto.setId(marketData.getCryptoId());
+        crypto.setPerformance(marketData.getCryptoValue());
+        return crypto;
+    }
 }
 
 
