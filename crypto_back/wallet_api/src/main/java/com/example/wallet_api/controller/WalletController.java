@@ -1,10 +1,11 @@
 package com.example.wallet_api.controller;
 
 
+import com.example.wallet_api.entity.Wallet;
 import com.example.wallet_api.service.WalletService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("wallet")
@@ -20,7 +21,20 @@ public class WalletController {
     }
 
 
+    @GetMapping("/{walletId}")
+    public Mono<Wallet> getWalletById(@PathVariable("walletId") Long walletId){
+        return walletService.getWalletById(walletId);
+    }
+
     @GetMapping()
+    public Flux<Wallet> getAllWallet(){
+        return walletService.getAll();
+    }
+
+    @DeleteMapping("/{walletId}")
+    public Mono<Void> deleteAWallet(@PathVariable("walletId") Long walletId){
+        return walletService.deleteWallet(walletId);
+    }
 
 
 

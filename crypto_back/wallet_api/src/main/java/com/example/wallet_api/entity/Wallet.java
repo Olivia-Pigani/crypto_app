@@ -25,8 +25,5 @@ public class Wallet {
     private User user;
 
 
-//    @Column("crypto_ids")
-//    private List<Long> cryptoIds;
-
 
 }
