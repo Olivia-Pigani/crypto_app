@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://10.125.51.56:8080/crypto/all"; 
+const API_URL = "http://10.125.51.53:8080/crypto/all"; 
 
 export const getAllCryptos = createAsyncThunk(
   "cryptos/getAllCryptos",
@@ -21,19 +21,23 @@ export const getOnecrypto = createAsyncThunk(
 const cryptoSlice = createSlice({
   name: "cryptos",
   initialState: {
-    cryptos:[],
+    cryptos: [],
     selectedCrypto: null
   },
   reducers: {
     setSelectedCrypto: (state, action) => {
       state.selectedCrypto = action.payload;
-    }
+    },
+    updateCryptos: (state, action) => {
+      state.cryptos = action.payload;
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(getAllCryptos.fulfilled, (state, action) => {
       console.log("Fulfilled with data:", action.payload);
       state.cryptos = action.payload;
-    });
+    });    
   
     builder.addCase(getAllCryptos.pending, (state) => {
       console.log("Pending...");

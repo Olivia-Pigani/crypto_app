@@ -30,7 +30,7 @@ public class CryptoAPIController {
     }
 
 
-    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Crypto> getAllCrypto() {
         return cryptoRepository.findAll();
     }

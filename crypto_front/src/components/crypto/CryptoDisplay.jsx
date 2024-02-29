@@ -1,41 +1,26 @@
-const CryptoDisplay = (props) => {
-  const crypto = props.crypto;
+import React from "react";
 
+const CryptoDisplay = ({ crypto }) => {
   if (!crypto) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div className="mb-4">
-        <div class="max-w-4xl px-10 py-6 bg-white rounded-lg shadow-md h-full">
-        <div class="flex flex-col justify-between items-left h-full">
-          <div class="flex justify-between items-center">
-            <div class="mt-2">
-          <span>{crypto.name || "No Name Available"}</span>
-          </div>
-        <div className="card-body">
-          <ul className="list-group list-group-flush">
-            <li className="list-group-item bg-light text-dark d-flex">
-              <b className="me-auto"> </b>
-              {crypto.symbol || "No Symbol Available"}
-            </li>
-            <li className="list-group-item bg-light text-dark d-flex">
-              <b className="me-auto">Name: </b>
-              {crypto.name || "No Name Available"}
-            </li>
-            {/* <li className="list-group-item bg-light text-dark d-flex">
-              <b className="me-auto">Value: </b>
-              {crypto.cryptoValue || "No Value Available"}
-            </li> */}
-          </ul>
-          </div>
-        </div>
+    <div className="flex items-center justify-between rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700 w-full">
+      <div className="px-6 py-3 border-b-2 border-neutral-100 dark:border-neutral-600 dark:text-neutral-50 font-bold">
+        {crypto.symbol}
+      </div>
+      <div className="p-6">
+        {crypto.name}
+      </div>
+      <div className="p-6 text-green-500">
+        + {crypto.performance}%
+      </div>
+      <div className="p-6">
+        $7.6
       </div>
     </div>
-    </div>
-    </div>
   );
-};
+}
 
 export default CryptoDisplay;
