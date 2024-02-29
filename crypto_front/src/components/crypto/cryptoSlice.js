@@ -1,61 +1,54 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Replace this with your actual API URL
-const API_URL = "your_api_url";
+const API_URL = "http://localhost:8080/crypto/all"; 
 
-export const signIn = createAsyncThunk(
-  "trader/signIn",
-  async (trader) => {
-    const response = await axios.post(`${API_URL}/traders/signin`, {
-      email: trader.email,
-      password: trader.password
-    });
-    return response.data;
+export const getAllCryptos = createAsyncThunk(
+  "cryptos/getAllCryptos",
+  async () => {
+      return (await axios.get(`${API_URL}`)).data;
   }
 );
 
-export const signUp = createAsyncThunk(
-  "trader/signUp",
-  async (trader) => {
-    const response = await axios.post(`${API_URL}/traders/signup`, {
-      email: trader.email,
-      password: trader.password
-    });
-    return response.data;
+export const getOnecrypto = createAsyncThunk(
+  "cryptos/getOnecrypto",
+  async (id) => {
+      return (await axios.get(`${API_URL}/crypto/${id}`)).data;
   }
 );
 
-const traderSlice = createSlice({
-  name: "trader",
+
+const cryptoSlice = createSlice({
+  name: "cryptos",
   initialState: {
-    traderMode: "Sign in",
-    trader: null
+    cryptos: [],
+    selectedCrypto: null
   },
   reducers: {
-    logOutAction(state, action) {
-      state.trader = null;
-      localStorage.removeItem('token');
-    },
-    setTraderMode: (state, action) => {
-      state.traderMode = action.payload;
+    setSelectedCrypto: (state, action) => {
+      state.selectedCrypto = action.payload;
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(signIn.fulfilled, (state, action) => {
-      state.trader = action.payload;
-      console.log(state.trader);
-      localStorage.setItem('token', action.payload.idToken);
+    builder.addCase(getAllCryptos.fulfilled, (state, action) => {
+      console.log("Fulfilled with data:", action.payload);
+      state.cryptos = action.payload;
     });
-
-    builder.addCase(signUp.fulfilled, (state, action) => {
-      state.trader = action.payload;
-      console.log(state.trader);
-      localStorage.setItem('token', action.payload.idToken);
+  
+    builder.addCase(getAllCryptos.pending, (state) => {
+      console.log("Pending...");
+      state.cryptos = [];
     });
+  
+    builder.addCase(getAllCryptos.rejected, (state, action) => {
+      console.error("Rejected with error:", action.error.message);
+      state.cryptos = [];
+    });
+    
   }
+  
 });
 
-export const { logOutAction, setTraderMode } = traderSlice.actions;
+export const { setSelectedCrypto } = cryptoSlice.actions;
 
-export default traderSlice.reducer;
+export default cryptoSlice.reducer;
