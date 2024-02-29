@@ -1,6 +1,7 @@
 package com.example.market_api.controller;
 
 import com.example.market_api.entity.Crypto;
+import com.example.market_api.entity.PerformanceResult;
 import com.example.market_api.repository.CryptoRepository;
 import com.example.market_api.repository.MarketDataRepository;
 import com.example.market_api.service.CryptoService;
@@ -39,10 +40,24 @@ public class CryptoAPIController {
         return cryptoRepository.save(crypto);
     }
 
-    @GetMapping(value = "/performance/{date}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Mono<ResponseEntity<Double>> calculatePerformance(@PathVariable("date") String date, @PathVariable("id") String id) {
-        return cryptoService.calculatePerformanceForDate(date, id)
-                .map(performance -> ResponseEntity.ok().body(performance))
-                .defaultIfEmpty(ResponseEntity.notFound().build());
+//    @GetMapping(value = "/performance/{date}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Mono<ResponseEntity<Double>> calculatePerformance(@PathVariable("date") String date, @PathVariable("id") String id) {
+//        return cryptoService.calculatePerformanceForDate(date, id)
+//                .map(performance -> ResponseEntity.ok().body(performance))
+//                .defaultIfEmpty(ResponseEntity.notFound().build());
+//    }
+
+    @GetMapping(value = "/performance/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<List<PerformanceResult>>> calculatePerformance(@PathVariable("date") String date) {
+        return cryptoService.calculatePerformanceForDate(date)
+                .collectList()
+                .map(performanceList -> {
+                    if (!performanceList.isEmpty()) {
+                        return ResponseEntity.ok().body(performanceList);
+                    } else {
+                        return ResponseEntity.notFound().build();
+                    }
+                });
     }
+
 }
