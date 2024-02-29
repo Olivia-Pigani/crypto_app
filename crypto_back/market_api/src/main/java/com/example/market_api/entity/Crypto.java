@@ -14,7 +14,6 @@ import java.util.UUID;
 
 @Data
 @Builder
-@AllArgsConstructor
 @Document(collection = "crypto")
 public class Crypto {
 
@@ -22,6 +21,7 @@ public class Crypto {
     private String id;
     private String name;
     private String symbol;
+    private double performance;
 
 
 
@@ -29,9 +29,17 @@ public class Crypto {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.symbol = symbol;
+        this.performance = 0;
 
     }
 
     public Crypto() {
+    }
+
+    public Crypto(String id, String name, String symbol, double performance) {
+        this.id = id;
+        this.name = name;
+        this.symbol = symbol;
+        this.performance = performance;
     }
 }

@@ -6,14 +6,18 @@ import com.example.market_api.repository.MarketDataRepository;
 import com.example.market_api.service.CryptoService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.enterprise.inject.Produces;
 import java.util.List;
 
 @RequestMapping("crypto")
 @RestController
+@CrossOrigin(origins = "*")
 public class CryptoAPIController {
 
     private final CryptoService cryptoService;
@@ -24,13 +28,6 @@ public class CryptoAPIController {
         this.cryptoRepository = cryptoRepository;
     }
 
-/*
-    @PostConstruct
-    public void insertDataOnStartup() {
-        System.out.println("hello");
-cryptoService.insertData();
-    }
-*/
 
     @GetMapping("/all")
     public Flux<Crypto> getAllCrypto() {
@@ -40,5 +37,12 @@ cryptoService.insertData();
     @PostMapping
     public Mono<Crypto> add(@RequestBody Crypto crypto) {
         return cryptoRepository.save(crypto);
+    }
+
+    @GetMapping(value = "/performance/{date}/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<ResponseEntity<Double>> calculatePerformance(@PathVariable("date") String date, @PathVariable("id") String id) {
+        return cryptoService.calculatePerformanceForDate(date, id)
+                .map(performance -> ResponseEntity.ok().body(performance))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
     }
 }

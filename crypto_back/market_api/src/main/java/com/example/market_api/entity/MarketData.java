@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.relational.core.mapping.Column;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -22,13 +23,13 @@ public class MarketData {
     private String id;
     private LocalDateTime tradingTime;
     private double cryptoValue;
-    @DBRef
-    private Crypto crypto;
+    @Column("crypto_id")
+    private String cryptoId;
 
-    public MarketData(LocalDateTime tradingTime, double cryptoValue, Crypto crypto) {
+    public MarketData(LocalDateTime tradingTime, double cryptoValue, String cryptoId) {
         this.id = UUID.randomUUID().toString();
         this.tradingTime = tradingTime;
         this.cryptoValue = cryptoValue;
-        this.crypto = crypto;
+        this.cryptoId = cryptoId;
     }
 }
