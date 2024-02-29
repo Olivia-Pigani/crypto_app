@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/crypto/all"; 
+const API_URL = "http://10.125.51.56:8080/crypto/all"; 
 
 export const getAllCryptos = createAsyncThunk(
   "cryptos/getAllCryptos",
@@ -21,7 +21,7 @@ export const getOnecrypto = createAsyncThunk(
 const cryptoSlice = createSlice({
   name: "cryptos",
   initialState: {
-    cryptos: [],
+    cryptos:[],
     selectedCrypto: null
   },
   reducers: {

@@ -20,10 +20,10 @@ const router = createBrowserRouter([
             //     path :"/wallet",
             //     element : <ProtectedRoute><Wallet /></ProtectedRoute>
             // },
-            // {
-            //     path: "/sign",
-            //     element: <SignForm />
-            // }
+            {
+                path: "/sign",
+                element: <SignForm />
+            }
         ]
     },
 ])
