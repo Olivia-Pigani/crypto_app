@@ -29,17 +29,15 @@ public class Crypto {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.symbol = symbol;
-        this.performance = 0;
 
     }
 
     public Crypto() {
     }
 
-    public Crypto(String id, String name, String symbol, double performance) {
+    public Crypto(String id, String name, String symbol) {
         this.id = id;
         this.name = name;
         this.symbol = symbol;
-        this.performance = performance;
     }
 }
