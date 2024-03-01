@@ -1,7 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "http://10.125.51.53:8080/crypto/all"; 
+const API_URL = "http://localhost:8080/crypto/all"; 
+const API_URL_PERFORMANCE = "http://localhost:8080/crypto/performance"; 
 
 export const getAllCryptos = createAsyncThunk(
   "cryptos/getAllCryptos",
@@ -17,12 +18,21 @@ export const getOnecrypto = createAsyncThunk(
   }
 );
 
+export const getPerformanceByDate = createAsyncThunk(
+  "performance/getPerformanceByDate",
+  async (date) => {
+    return (await axios.get(`${API_URL_PERFORMANCE}/${date}`)).data;
+  }
+);
+
+
 
 const cryptoSlice = createSlice({
   name: "cryptos",
   initialState: {
     cryptos: [],
-    selectedCrypto: null
+    selectedCrypto: null,
+    selectedPerformanceData : null
   },
   reducers: {
     setSelectedCrypto: (state, action) => {
@@ -31,6 +41,9 @@ const cryptoSlice = createSlice({
     updateCryptos: (state, action) => {
       state.cryptos = action.payload;
     },
+    setPerformanceData : (state,action) => {
+      state.selectedPerformanceData = action.payload;
+    }
   },
 
   extraReducers: (builder) => {
@@ -48,11 +61,23 @@ const cryptoSlice = createSlice({
       console.error("Rejected with error:", action.error.message);
       state.cryptos = [];
     });
+    builder.addCase(getPerformanceByDate.fulfilled, (state, action) => {
+      console.log("Performance data fetched:", action.payload);
+      state.selectedPerformanceData = action.payload;
+    });
+
+    builder.addCase(getPerformanceByDate.pending, (state) => {
+      console.log("Fetching performance data...");
+    });
+  
+    builder.addCase(getPerformanceByDate.rejected, (state, action) => {
+      console.error("Failed to fetch performance data:", action.error.message);
+    });
     
   }
   
 });
 
-export const { setSelectedCrypto } = cryptoSlice.actions;
+export const { setSelectedCrypto,selectedCrypto, setSelectedPerformanceData, selectedPerformanceData } = cryptoSlice.actions;
 
 export default cryptoSlice.reducer;
