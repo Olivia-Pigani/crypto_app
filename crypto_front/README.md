@@ -3,7 +3,7 @@
 ![alt text](screenshots/homepage_error.png)
 ![alt text](screenshots/homepage.png)
 ![alt text](screenshots/register.png)
-![alt text](screenshots/signin_1.png)
+![alt text](screenshots/signin.png)
 
 
 # Getting Started with Create React App
