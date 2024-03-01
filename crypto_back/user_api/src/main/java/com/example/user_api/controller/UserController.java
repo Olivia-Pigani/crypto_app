@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 @CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
@@ -27,17 +27,23 @@ public class UserController {
 
     }
 
-    @PostMapping
+    @PostMapping("/adduser")
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<User> create(@Valid @RequestBody User user) {
-        System.out.println("post user is ok");
-        return userService.createUser(user);
+        return userService.createUser(user)
+                .doOnSuccess((Void)-> System.out.println( "new user has been produced"))
+                .doOnError((Void)-> System.out.println("error while producing new user"));
     }
 
     @GetMapping("/{username}")
     public Mono<ResponseEntity<User>> getUserByUsername(@PathVariable String username) {
         Mono<User> user = userService.getUserByUsername(username);
         return user.map(u -> ResponseEntity.ok(u)).defaultIfEmpty(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping()
+    public Flux<User> getAllUsers(){
+        return userService.getAllUsers();
     }
 
     @GetMapping("/{email}")

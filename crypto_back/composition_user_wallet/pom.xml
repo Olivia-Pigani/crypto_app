@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>wallet_api</artifactId>
+    <artifactId>composition_user_wallet</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>wallet_api</name>
-    <description>wallet_api</description>
+    <name>composition_user_wallet</name>
+    <description>composition_user_wallet</description>
     <properties>
         <java.version>17</java.version>
     </properties>
@@ -60,13 +60,6 @@
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-
-        <dependency>
-            <groupId>dev.miku</groupId>
-            <artifactId>r2dbc-mysql</artifactId>
-            <version>0.8.2.RELEASE</version>
         </dependency>
     </dependencies>
 

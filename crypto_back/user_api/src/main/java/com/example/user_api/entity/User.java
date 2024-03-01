@@ -14,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @AllArgsConstructor
 @ToString
 @Builder
-@Document(collection = "traders")
+@Document(collection = "user")
 public class User {
 
     @Id
-    private int id;
+    private long id;
 
     @NotBlank(message = "First name is mandatory")
     @NotNull(message = "First name cannot be null")
