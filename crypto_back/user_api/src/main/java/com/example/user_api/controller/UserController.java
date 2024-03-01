@@ -45,10 +45,10 @@ public class UserController {
         Mono<User> user = userService.getUserByEmail(email);
         return user.map(u -> ResponseEntity.ok(u)).defaultIfEmpty(ResponseEntity.notFound().build());
     }
-    @PostMapping("/search/email")
+    /*@PostMapping("/search/email")
     public Flux<User> fetchUsersByEmail(@RequestBody List<String> email) {
         return userService.fetchUsers(email);
-    }
+    }*/
 
 
     @PostMapping("/login")

@@ -102,13 +102,13 @@ public class UserService implements UserDetailsService {
     }
 
     // Here the db lookup uses parallel processing
-    public Flux<User> fetchUsers(List<String> userIds) {
+    /*public Flux<User> fetchUsers(List<Integer> userIds) {
         return Flux.fromIterable(userIds)
                 .parallel()
                 .runOn(Schedulers.boundedElastic())
                 .flatMap(i -> findById(i))
                 .ordered((u1, u2) -> u2.getId() - u1.getId());
-    }
+    }*/
 
 
 
