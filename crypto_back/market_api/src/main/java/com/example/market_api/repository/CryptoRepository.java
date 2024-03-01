@@ -10,6 +10,7 @@ public interface CryptoRepository extends ReactiveMongoRepository<Crypto, Intege
 
 Mono<Crypto> findCryptoByName(String crypto);
 Mono<Crypto> findById(String id);
+
 }
 
 

@@ -21,4 +21,6 @@ public interface MarketDataRepository extends ReactiveMongoRepository<MarketData
     Mono<MarketData> findFirstByCryptoIdAndTradingTimeLessThanOrderByTradingTimeDesc(LocalDateTime dateTime, String id);
 
     Flux<MarketData> findByTradingTime(LocalDateTime dateTime);
+
+    Mono<MarketData> findByCryptoId(String id);
 }

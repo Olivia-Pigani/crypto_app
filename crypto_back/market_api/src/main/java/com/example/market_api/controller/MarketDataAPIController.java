@@ -55,8 +55,10 @@ public class MarketDataAPIController {
         return marketDataRepository.findAll();
     }
 
-
-
+    @GetMapping("/{id}")
+    public Mono<MarketData> getById(@PathVariable("id") String id){
+        return marketDataRepository.findByCryptoId(id);
+    }
 
 }
 

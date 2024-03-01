@@ -1,6 +1,7 @@
 package com.example.market_api.controller;
 
 import com.example.market_api.entity.Crypto;
+import com.example.market_api.entity.MarketData;
 import com.example.market_api.entity.PerformanceResult;
 import com.example.market_api.repository.CryptoRepository;
 import com.example.market_api.repository.MarketDataRepository;
@@ -52,6 +53,12 @@ public class CryptoAPIController {
                     }
                 });
     }
+
+    @GetMapping("/{id}")
+    public Mono<Crypto> getById(@PathVariable("id") String id){
+        return cryptoRepository.findById(id);
+    }
+
     @GetMapping(value = "/price/{date}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Crypto> getPrice(@PathVariable String date) {
         return cryptoService.getPriceByDate(date);
