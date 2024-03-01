@@ -14,6 +14,7 @@ import java.util.UUID;
 
 @Data
 @Builder
+@AllArgsConstructor
 @Document(collection = "crypto")
 public class Crypto {
 
@@ -40,4 +41,6 @@ public class Crypto {
         this.name = name;
         this.symbol = symbol;
     }
+
+
 }

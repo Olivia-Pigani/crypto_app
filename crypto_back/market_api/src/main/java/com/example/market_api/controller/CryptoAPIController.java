@@ -54,6 +54,8 @@ public class CryptoAPIController {
                 });
     }
 
+
+
     @GetMapping("/{id}")
     public Mono<Crypto> getById(@PathVariable("id") String id){
         return cryptoRepository.findById(id);

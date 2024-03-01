@@ -16,11 +16,11 @@ public interface MarketDataRepository extends ReactiveMongoRepository<MarketData
 
     Flux<MarketData> findAllById(String id);
 
-    Mono<MarketData> findFirstByCryptoIdAndTradingTimeGreaterThanEqualOrderByTradingTimeAsc(String cryptoId, LocalDateTime dateTime);
+    Mono<MarketData> findFirstByCryptoIdAndTradingTimeGreaterThanEqualOrderByTradingTimeAsc(String cryptoId, LocalDate dateTime);
 
-    Mono<MarketData> findFirstByCryptoIdAndTradingTimeLessThanOrderByTradingTimeDesc(LocalDateTime dateTime, String id);
+    Mono<MarketData> findFirstByCryptoIdAndTradingTimeLessThanOrderByTradingTimeDesc(LocalDate dateTime, String id);
 
-    Flux<MarketData> findByTradingTime(LocalDateTime dateTime);
+    Flux<MarketData> findByTradingTime(LocalDate dateTime);
 
     Mono<MarketData> findByCryptoId(String id);
 }
