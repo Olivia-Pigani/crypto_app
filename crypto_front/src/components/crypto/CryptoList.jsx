@@ -15,9 +15,9 @@ const CryptoList = () => {
   return (
     <div className="row my-3">
       <div className="d-flex justify-content-center align-items-center">
-        <div className="flex items-center justify-between flex-wrap">
+      <div className="flex flex-col md:flex-row items-center justify-between flex-wrap">
           <CryptoChart />
-        </div>
+      </div>
       </div>
       <div className="rounded text-gray-800 p-3 d-flex justify-content-center">
         {cryptos.length === 0 ? (

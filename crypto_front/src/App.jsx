@@ -13,7 +13,7 @@ function App() {
       <header>
         <Navbar />
       </header>
-      <main className="container mt-5">
+      <main className="container mt-4">
         <div class="row justify-content-md-center">
           <div class="col-8">
             <Outlet />

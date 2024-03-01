@@ -5,10 +5,10 @@ const API_URL = "";
 
 export const signIn = createAsyncThunk(
   "auth/signIn",
-  async (trader) => {
-    const response = await axios.post(`${API_URL}/traders/signin`, {
-      email: trader.email,
-      password: trader.password
+  async (user) => {
+    const response = await axios.post(`${API_URL}/users/signin`, {
+      email: user.email,
+      password: user.password
     });
     return response.data;
   }
@@ -16,46 +16,46 @@ export const signIn = createAsyncThunk(
 
 export const signUp = createAsyncThunk(
   "auth/signUp",
-  async (trader) => {
-    const response = await axios.post(`${API_URL}/traders/signup`, {
-      email: trader.email,
-      password: trader.password
+  async (user) => {
+    const response = await axios.post(`${API_URL}/users/signup`, {
+      email: user.email,
+      password: user.password
     });
     return response.data;
   }
 );
 
 
-const traderSlice = createSlice({
+const userSlice = createSlice({
   name: "auth",
   initialState: {
-    traderMode: "Sign in",
-    trader: null
+    userMode: "Register",
+    user: null
   },
   reducers: {
     logOutAction(state, action) {
-      state.trader = null;
+      state.user = null;
       localStorage.removeItem('token');
     },
-    setTraderMode: (state, action) => {
-        state.traderMode = action.payload;
+    setUserMode: (state, action) => {
+        state.userMode = action.payload;
     }
   },
   extraReducers: (builder) => {
     builder.addCase(signIn.fulfilled, (state, action) => {
-      state.trader = action.payload;
-      console.log(state.trader);
+      state.user = action.payload;
+      console.log(state.user);
       localStorage.setItem('token', action.payload.idToken);
     });
 
     builder.addCase(signUp.fulfilled, (state, action) => {
-      state.trader = action.payload;
-      console.log(state.trader);
+      state.user = action.payload;
+      console.log(state.user);
       localStorage.setItem('token', action.payload.idToken);
     });
   }
 });
 
-export const { logOutAction, setTraderMode } = traderSlice.actions;
+export const { logOutAction, setUserMode } = userSlice.actions;
 
-export default traderSlice.reducer;
+export default userSlice.reducer;

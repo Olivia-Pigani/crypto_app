@@ -13,9 +13,6 @@ const CryptoDisplay = ({ crypto }) => {
       <div className="p-6">
         {crypto.name}
       </div>
-      <div className="p-6 text-green-500">
-        + {crypto.performance}%
-      </div>
       <div className="p-6">
         $7.6
       </div>
