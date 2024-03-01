@@ -1,9 +1,13 @@
 package com.example.user_api.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
-public class TraderDTO {
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class UserDTO {
     private int id;
 
     private String firstName;

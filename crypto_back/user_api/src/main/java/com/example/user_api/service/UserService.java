@@ -1,8 +1,10 @@
 package com.example.user_api.service;
 
-import com.example.user_api.entity.Trader;
-import com.example.user_api.repository.TraderRepository;
+import com.example.user_api.entity.User;
+import com.example.user_api.repository.UserRepository;
 import io.r2dbc.spi.ConnectionFactory;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,24 +15,26 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 
 @Service
-public class TraderService implements UserDetailsService {
+@Slf4j
+
+public class UserService implements UserDetailsService {
 
 
-    private TraderRepository traderRepository;
+    private UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     private final ConnectionFactory connectionFactory;
     private DatabaseClient databaseClient;
     @Autowired
-    public TraderService(PasswordEncoder passwordEncoder, ConnectionFactory connectionFactory) {
+    public UserService(PasswordEncoder passwordEncoder, ConnectionFactory connectionFactory) {
         this.passwordEncoder = passwordEncoder;
         this.connectionFactory = connectionFactory;
         createTable();
@@ -50,14 +54,18 @@ public class TraderService implements UserDetailsService {
                         ")")
 
                 .then().doOnSuccess((Void) ->  {
-                    System.out.println("Création de la table OK");
+                    System.out.println("Table User created is OK");
                 }).doOnError((Void) ->  {
-                    System.out.println("Création de la table Not OK");
+                    System.out.println("Table User created is KO");
                 });
         monoCreateTable.subscribe();
         System.out.println("table created");
     }
-    public Mono add(String firstName, String lastName, String email, String username, String password) {
+    public Mono<User> createUser(User user) {
+        return userRepository.save(user);
+    }
+    
+    /*public Mono add(String firstName, String lastName, String email, String username, String password) {
         Map<String, Object> values = new HashMap<>();
         values.put("firstName", firstName);
         values.put("lastName", lastName);
@@ -69,11 +77,11 @@ public class TraderService implements UserDetailsService {
                 .bindValues(values)
                 .then();
         return result;
-    }
-    public Flux<Trader> getAll() {
+    }*/
+    public Flux<User> getAllUsers() {
         return databaseClient.sql("SELECT * from trader").fetch()
                 .all()
-                .map(m -> Trader.builder()
+                .map(m -> User.builder()
                         .id(Integer.valueOf(m.get("id").toString()))
                         .firstName(m.get("firstname").toString())
                         .lastName(m.get("lastname").toString())
@@ -82,53 +90,58 @@ public class TraderService implements UserDetailsService {
                         .password(m.get("password").toString())
                         .build());
     }
-
-    @Override
-    public  UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-         return traderRepository.findByUsername(username)
-                    .map(trader -> {
-                        if (trader == null) {
-                            throw new UsernameNotFoundException("Utilisateur non trouvé: " + username);
-                        }
-                        return new org.springframework.security.core.userdetails.User(
-                                username,
-                                "{noop}" + trader.getPassword(),
-                                true,
-                                true,
-                                true,
-                                true,
-                                Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
-                        );
-                    }).block(); // Bloquez le flux pour obtenir directement le UserDetails
-        }
-
-
-    public Mono<Trader> add(Trader trader) {
-        return databaseClient
-                .sql("INSERT INTO trader (first_name, last_name, email, user_name, password) VALUES (:firstName, :lastName, :email, :userName, :password)")
-                .bind("firstName", trader.getFirstName())
-                .bind("lastName", trader.getLastName())
-                .bind("email", trader.getEmail())
-                .bind("userName", trader.getUsername())
-                .bind("password", trader.getPassword())
-                .fetch()
-                .rowsUpdated()
-                .thenReturn(trader)
-                .doOnSuccess(savedTrader -> System.out.println("Trader ajouté avec succès: " + savedTrader))
-                .doOnError(error -> System.out.println("Erreur lors de l'ajout du trader: " + error.getMessage()));
+    public Mono<User> getUserByUsername(String username){
+        return  userRepository.findByUsername(username);
     }
+
+    public Mono<User> getUserByEmail(String email){
+        return  userRepository.findByEmail(email);
+    }
+    public Mono<User> findById(Integer userId) {
+        return userRepository.findById(userId);
+    }
+
+    // Here the db lookup uses parallel processing
+    public Flux<User> fetchUsers(List<String> userIds) {
+        return Flux.fromIterable(userIds)
+                .parallel()
+                .runOn(Schedulers.boundedElastic())
+                .flatMap(i -> findById(i))
+                .ordered((u1, u2) -> u2.getId() - u1.getId());
+    }
+
+
+
 
     public UserDetails authenticate(String username, String password) {
         // Récupérer le trader par nom d'utilisateur
-        Trader trader = traderRepository.findByUsername(username).block();
+        User user = userRepository.findByUsername(username).block();
 
-        if (trader != null && trader.getPassword().equals(password)) {
+        if (user != null && user.getPassword().equals(password)) {
             // Les informations d'identification sont valides, créer et retourner un UserDetails
             return loadUserByUsername(username);
         } else {
             // Les informations d'identification sont incorrectes, renvoyer null
             return null;
         }
+    }
+    @Override
+    public  UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByUsername(username)
+                .map(user -> {
+                    if (user == null) {
+                        throw new UsernameNotFoundException("Utilisateur non trouvé: " + username);
+                    }
+                    return new org.springframework.security.core.userdetails.User(
+                            username,
+                            "{noop}" + user.getPassword(),
+                            true,
+                            true,
+                            true,
+                            true,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
+                    );
+                }).block(); // Bloquez le flux pour obtenir directement le UserDetails
     }
 
 
