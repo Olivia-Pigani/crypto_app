@@ -6,8 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,20 +26,20 @@ public class UserController {
 
     }
 
-    @PostMapping
+    @PostMapping(("add"))
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<User> create(@Valid @RequestBody User user) {
         System.out.println("post user is ok");
         return userService.createUser(user);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public Mono<ResponseEntity<User>> getUserByUsername(@PathVariable String username) {
         Mono<User> user = userService.getUserByUsername(username);
         return user.map(u -> ResponseEntity.ok(u)).defaultIfEmpty(ResponseEntity.notFound().build());
     }
 
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public Mono<ResponseEntity<User>> getUserByEmail(@PathVariable String email) {
         Mono<User> user = userService.getUserByEmail(email);
         return user.map(u -> ResponseEntity.ok(u)).defaultIfEmpty(ResponseEntity.notFound().build());
@@ -51,7 +50,7 @@ public class UserController {
     }*/
 
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String username, @RequestParam String password) {
         UserDetails userDetails = userService.authenticate(username, password);
 
@@ -62,5 +61,5 @@ public class UserController {
             // L'authentification a échoué, retournez un message d'erreur
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Identifiers invalid");
         }
-    }
+    }*/
 }

@@ -7,38 +7,46 @@ import io.r2dbc.spi.ConnectionFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.r2dbc.core.DatabaseClient;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
 @Slf4j
 
-public class UserService implements UserDetailsService {
+public class UserService  {
+//public class UserService implements UserDetailsService {
 
 
     private UserRepository userRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    //private final PasswordEncoder passwordEncoder;
 
     private final ConnectionFactory connectionFactory;
     private DatabaseClient databaseClient;
+
+
+
     @Autowired
+    public UserService( UserRepository userRepository,ConnectionFactory connectionFactory) {
+       this.connectionFactory = connectionFactory;
+        this.userRepository = userRepository;
+        createTable();
+    }
+  /*  @Autowired
     public UserService(PasswordEncoder passwordEncoder, ConnectionFactory connectionFactory) {
         this.passwordEncoder = passwordEncoder;
         this.connectionFactory = connectionFactory;
         createTable();
-    }
+    }*/
 
 
     private void createTable() {
@@ -50,7 +58,7 @@ public class UserService implements UserDetailsService {
                         "last_name varchar(50)," +
                         "email varchar(150)," +
                         "user_name varchar(50)," +
-                        "password varchar(12)" + // Suppression de la virgule ici
+                        "password varchar(12)" +
                         ")")
 
                 .then().doOnSuccess((Void) ->  {
@@ -113,7 +121,7 @@ public class UserService implements UserDetailsService {
 
 
 
-    public UserDetails authenticate(String username, String password) {
+   /* public UserDetails authenticate(String username, String password) {
         // Récupérer le trader par nom d'utilisateur
         User user = userRepository.findByUsername(username).block();
 
@@ -142,7 +150,7 @@ public class UserService implements UserDetailsService {
                             Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"))
                     );
                 }).block(); // Bloquez le flux pour obtenir directement le UserDetails
-    }
+    }*/
 
 
 
