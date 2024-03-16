@@ -5,24 +5,24 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
-import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
 @Setter
 @Builder
-@Table("wallet")
+@Document("wallet")
 public class Wallet {
 
 
     @Id
-    private long id;
+    private String id;
+
     private double balance;
 
-    private User user;
+    @Field("user_id")
+    private String userId;
 
 
 

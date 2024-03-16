@@ -1,6 +1,7 @@
 package com.example.wallet_api.controller;
 
 
+import com.example.wallet_api.dto.WalletDTO;
 import com.example.wallet_api.entity.Wallet;
 import com.example.wallet_api.service.WalletService;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class WalletController {
 
 
     @GetMapping("/{walletId}")
-    public Mono<Wallet> getWalletById(@PathVariable("walletId") Long walletId){
+    public Mono<Wallet> getWalletById(@PathVariable("walletId") String walletId){
         return walletService.getWalletById(walletId);
     }
 
@@ -31,13 +32,17 @@ public class WalletController {
     }
 
     @DeleteMapping("/{walletId}")
-    public Mono<Void> deleteAWallet(@PathVariable("walletId") Long walletId){
+    public Mono<Void> deleteAWallet(@PathVariable("walletId") String walletId){
         return walletService.deleteWallet(walletId);
     }
 
 
-//    @PostMapping("/addwallet")
-//    public Mono<Wallet> addwallet
+    @PostMapping("/add")
+    public Mono<Wallet> addwallet(@RequestBody WalletDTO walletDTO){
+        return walletService.addWallet(walletDTO);
+
+
+    }
 
 
 

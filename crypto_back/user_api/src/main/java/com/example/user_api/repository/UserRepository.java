@@ -7,9 +7,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
-public interface UserRepository extends ReactiveMongoRepository<User, Long> {
+public interface UserRepository extends ReactiveMongoRepository<User, String> {
 
    Mono<User> findByUsername(final String username);
    Mono<User> findByEmail(final String email);
-
+   Mono<User> findUserByEmail(String email);
 }
